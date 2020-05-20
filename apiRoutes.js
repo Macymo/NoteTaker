@@ -12,18 +12,19 @@ module.exports = function(app) {
 
    // /api/notes should read the db.json file and return all saved notes as JSON
   app.get("/api/notes"), function(req, res) {
-    res.sendFile(path.join(__dirname, "db/db.json"))
-  }
-
-  // db.json file will be used to store and retrieve notes using the fs module
-  // Here we use the fs package to read our index.html file
-    fs.readFile(__dirname + "db/db.json", function(err, data) {
-      if (err) throw err;
+    console.log("test");
+    // db.json file will be used to store and retrieve notes using the fs module
+    // Here we use the fs package to read our index.html file
+    fs.readFile("db/db.json", "utf-8", function(err, data) {
+      if (err) {
+      console.log(err);
+    }
+      console.log(data);
       // We then respond to the client with the HTML page by specifically telling the browser that we are delivering
       // an html file.
       res.end(data);
     });
-  
+  }
 
   // API POST Requests
 
