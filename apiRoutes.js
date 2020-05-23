@@ -9,7 +9,7 @@ module.exports = function(app) {
   // API GET Requests
 
    // /api/notes should read the db.json file and return all saved notes as JSON
-   app.get('/api/notes', function (req, res) {
+  app.get('/api/notes', function (req, res) {
     fs.readFile("db/db.json", "utf8", function(error,data) {
       res.json(JSON.parse(data));
     });
@@ -36,18 +36,36 @@ module.exports = function(app) {
 
     });
 
-
     // Should receive a query parameter containing the id of a note to delete. 
     //  give each note a unique id when it's saved. 
     //  to delete a note, you'll need to read all notes from the db.json file, 
     // remove the note with the given id property, and then rewrite the notes to the db.json file.
-    app.delete("/api/notes/:id"), function(req, res) {
+    app.delete("/api/notes/:id", function(req, res) {
+      fs.readFile("db/db.json", "utf8", function(error, data) {
+        console.log("test");
+        let noteId = req.params.id;
+        console.log(noteId);
 
-
-    }
-
-  
-    app.post("/api/clear", function(req, res) {
-        res.json({ ok: true });
+        let noteData = JSON.parse(data);
+        console.log(noteData);
+        noteData = noteData.filter(function(note) {
+            if (noteId != note.id) {
+              console.log("test");
+              return true;
+            } else {
+              console.log("false");
+              return false;
+            };
+            
+        }); 
+        console.log(noteData);
+        
+        fs.writeFile("db/db.json", JSON.stringify(noteData), function(error){
+          if (error)
+          throw error;
+          res.end("Deleted Successfully");
+        })
+      });
     });
+
 };
