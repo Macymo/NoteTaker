@@ -13,6 +13,7 @@ module.exports = function(app) {
     fs.readFile("db/db.json", "utf8", function(error,data) {
       res.json(JSON.parse(data));
     });
+    
   });
 
   // API POST Requests
@@ -42,30 +43,22 @@ module.exports = function(app) {
     // remove the note with the given id property, and then rewrite the notes to the db.json file.
     app.delete("/api/notes/:id", function(req, res) {
       fs.readFile("db/db.json", "utf8", function(error, data) {
-        console.log("test");
         let noteId = req.params.id;
-        console.log(noteId);
-
         let noteData = JSON.parse(data);
-        console.log(noteData);
         noteData = noteData.filter(function(note) {
             if (noteId != note.id) {
-              console.log("test");
               return true;
             } else {
-              console.log("false");
               return false;
             };
-            
         }); 
-        console.log(noteData);
-        
         fs.writeFile("db/db.json", JSON.stringify(noteData), function(error){
           if (error)
           throw error;
-          res.end("Deleted Successfully");
+          res.end(console.log("Deleted Successfully"));
         })
       });
+
     });
 
 };
